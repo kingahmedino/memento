@@ -18,6 +18,9 @@ android {
     buildFeatures {
         compose = true
     }
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.0"
     }
@@ -53,4 +56,7 @@ dependencies {
     //hilt
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    //kotlin datetime
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 }
