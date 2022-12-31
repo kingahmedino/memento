@@ -1,0 +1,39 @@
+CREATE TABLE reminderEntity(
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    location TEXT NOT NULL,
+    latitude REAL NOT NULL,
+    longitude REAL NOT NULL,
+    colorHex INTEGER NOT NULL,
+    created INTEGER NOT NULL,
+    triggered INTEGER AS Boolean NOT NULL DEFAULT 0
+);
+
+getAllReminders:
+SELECT *
+FROM reminderEntity;
+
+getAllNonTriggeredReminders:
+SELECT *
+FROM reminderEntity
+WHERE triggered = 0;
+
+getAllTriggeredReminders:
+SELECT *
+FROM reminderEntity
+WHERE triggered > 0;
+
+getReminderById:
+SELECT *
+FROM reminderEntity
+WHERE id = ?;
+
+insertReminder:
+INSERT OR REPLACE
+INTO reminderEntity
+VALUES ?;
+
+deleteReminder:
+DELETE FROM reminderEntity
+WHERE id = ?;
