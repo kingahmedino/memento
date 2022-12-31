@@ -59,6 +59,13 @@ kotlin {
     }
 }
 
+sqldelight {
+    database("MementoDb") {
+        packageName = "com.app.memento.database"
+        sourceFolders = listOf("sqldelight")
+    }
+}
+
 android {
     namespace = "com.app.memento"
     compileSdk = 33
