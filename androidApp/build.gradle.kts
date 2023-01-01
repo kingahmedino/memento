@@ -62,4 +62,6 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.1")
     //accompanist for jetpack compose
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+    //splash API
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }
