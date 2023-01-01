@@ -49,7 +49,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.activity:activity-compose:1.6.1")
     //location services
     implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -59,4 +58,8 @@ dependencies {
     //kotlin datetime
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
+    //material3
+    implementation("androidx.compose.material3:material3:1.0.1")
+    //accompanist for jetpack compose
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
 }
