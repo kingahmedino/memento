@@ -5,19 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.memento.android.ui.navigation.Screen
 import com.app.memento.android.utils.DataStoreUtils
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SplashViewModel @Inject constructor(private val dataStoreUtils: DataStoreUtils): ViewModel() {
-    var isLoading = mutableStateOf(true)
-        private set
-
-    var startDestination = mutableStateOf(Screen.OnBoardingScreen.route)
+    var startDestination = mutableStateOf("")
     private set
 
     init {
         viewModelScope.launch {
+            delay(500L)
             dataStoreUtils.readUsername().first { username ->
                 if (username.isNotEmpty())
                     startDestination.value = Screen.HomeScreen.route
@@ -32,7 +31,6 @@ class SplashViewModel @Inject constructor(private val dataStoreUtils: DataStoreU
                 }
                 true
             }
-            isLoading.value = false
         }
     }
 }
