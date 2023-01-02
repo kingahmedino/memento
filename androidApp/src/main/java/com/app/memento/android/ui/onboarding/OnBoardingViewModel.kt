@@ -17,10 +17,4 @@ class OnBoardingViewModel @Inject constructor(private val dataStoreUtils: DataSt
         }
     }
 
-    fun saveSignInState(username: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            dataStoreUtils.saveSignInState(username = username)
-        }
-    }
-
 }

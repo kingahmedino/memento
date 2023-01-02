@@ -1,5 +1,6 @@
 package com.app.memento.android.ui.common
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -24,31 +26,41 @@ fun EndTextNavBar(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (canNavigateBack)
-            OutlinedButton(
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .padding(end = 10.dp)
-                    .size(width = 40.dp, height = 40.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                onClick = onBackIconClicked
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_left),
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = "Back button"
-                )
-            }
-        if (screenTitle.isNotEmpty())
-            Text(text = screenTitle, style = MaterialTheme.typography.headlineSmall)
+        OutlinedButton(
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier
+                .padding(end = 10.dp)
+                .size(width = 40.dp, height = 40.dp)
+                .alpha(if (canNavigateBack) 1f else 0f),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            onClick = onBackIconClicked,
+            border = BorderStroke(
+                width = 1.dp,
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+            )
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.arrow_left),
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = "Back button"
+            )
+        }
 
-        Text(text = endText, style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary), modifier = Modifier.clickable { onEndTextClicked() })
+        Text(
+            text = screenTitle,
+            modifier = Modifier.alpha(if (screenTitle.isNotEmpty()) 1f else 0f),
+            style = MaterialTheme.typography.headlineSmall
+        )
+
+        Text(
+            text = endText,
+            style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary),
+            modifier = Modifier.clickable { onEndTextClicked() })
     }
 }
 
@@ -62,29 +74,36 @@ fun EndIconNavBar(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (canNavigateBack)
-            OutlinedButton(
-                contentPadding = PaddingValues(0.dp),
-                modifier = Modifier
-                    .padding(end = 10.dp)
-                    .size(width = 40.dp, height = 40.dp),
-                shape = RoundedCornerShape(14.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                onClick = onBackIconClicked
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_left),
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = "Back button"
-                )
-            }
-        if (screenTitle.isNotEmpty())
-            Text(text = screenTitle, style = MaterialTheme.typography.headlineSmall)
+        OutlinedButton(
+            contentPadding = PaddingValues(0.dp),
+            modifier = Modifier
+                .padding(end = 10.dp)
+                .size(width = 40.dp, height = 40.dp)
+                .alpha(if (canNavigateBack) 1f else 0f),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            onClick = onBackIconClicked,
+            border = BorderStroke(
+                width = 1.dp,
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+            )
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.arrow_left),
+                tint = MaterialTheme.colorScheme.primary,
+                contentDescription = "Back button"
+            )
+        }
+
+        Text(
+            text = screenTitle,
+            modifier = Modifier.alpha(if (screenTitle.isNotEmpty()) 1f else 0f),
+            style = MaterialTheme.typography.headlineSmall
+        )
 
         OutlinedButton(
             contentPadding = PaddingValues(0.dp),
@@ -93,7 +112,11 @@ fun EndIconNavBar(
                 .size(width = 40.dp, height = 40.dp),
             shape = RoundedCornerShape(14.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-            onClick = onEndIconClicked
+            onClick = onEndIconClicked,
+            border = BorderStroke(
+                width = 1.dp,
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
+            )
         ) {
             Icon(
                 painter = endIcon,
@@ -108,7 +131,11 @@ fun EndIconNavBar(
 @Preview
 fun EndTextNavBarPreview() {
     Surface(color = Color.White) {
-        EndTextNavBar(screenTitle = "Personal Info", endText = "Skip", canNavigateBack = true, onBackIconClicked = {})
+        EndTextNavBar(
+            screenTitle = "Personal Info",
+            endText = "Skip",
+            canNavigateBack = true,
+            onBackIconClicked = {})
     }
 }
 
@@ -116,6 +143,10 @@ fun EndTextNavBarPreview() {
 @Preview
 fun EndIconNavBarPreview() {
     Surface(color = Color.White) {
-        EndIconNavBar(screenTitle = "Check your name", endIcon = painterResource(id = R.drawable.search_icon), canNavigateBack = true)
+        EndIconNavBar(
+            screenTitle = "Check your name",
+            endIcon = painterResource(id = R.drawable.search_icon),
+            canNavigateBack = true
+        )
     }
 }

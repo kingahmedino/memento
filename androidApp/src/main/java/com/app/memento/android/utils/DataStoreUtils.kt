@@ -25,9 +25,9 @@ class DataStoreUtils(context: Context) {
         }
     }
 
-    suspend fun saveSignInState(username: String) {
+    suspend fun saveSignInState(name: String) {
         dataStore.edit { preferences ->
-            preferences[PreferencesKey.signInKey] = username
+            preferences[PreferencesKey.signInKey] = name
         }
     }
 
@@ -56,8 +56,8 @@ class DataStoreUtils(context: Context) {
                 }
             }
             .map { preferences ->
-                val username = preferences[PreferencesKey.signInKey] ?: ""
-                username
+                val name = preferences[PreferencesKey.signInKey] ?: ""
+                name
             }
     }
 }
