@@ -3,6 +3,7 @@ package com.app.memento.android.di
 import android.app.Application
 import com.app.memento.android.location.DefaultLocationClient
 import com.app.memento.android.location.LocationClient
+import com.app.memento.android.utils.DataStoreUtils
 import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
@@ -21,6 +22,12 @@ object AppModule {
             application,
             LocationServices.getFusedLocationProviderClient(application)
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideDataStore(application: Application): DataStoreUtils {
+        return DataStoreUtils(application)
     }
 
 }

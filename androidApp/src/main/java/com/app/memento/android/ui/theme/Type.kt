@@ -40,12 +40,14 @@ val typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = CircularStd,
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp
+        fontSize = 14.sp,
+        lineHeight = 20.sp
     ),
     //captions like: "Personal Information"
     bodySmall = TextStyle(
         fontFamily = CircularStd,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
+        fontSize = 12.sp,
+        lineHeight = 18.sp
     )
 )
