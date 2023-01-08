@@ -31,8 +31,17 @@ WHERE id = ?;
 
 insertReminder:
 INSERT OR REPLACE
-INTO reminderEntity
-VALUES ?;
+INTO reminderEntity(
+         id,
+         title,
+         description,
+         location,
+         latitude,
+         longitude,
+         colorHex,
+         created,
+         triggered
+     ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteReminder:
 DELETE FROM reminderEntity
