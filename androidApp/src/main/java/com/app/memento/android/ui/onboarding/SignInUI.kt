@@ -3,11 +3,18 @@ package com.app.memento.android.ui.onboarding
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,12 +33,16 @@ fun SignInUI(
     var firstNameText by rememberSaveable { mutableStateOf("") }
     var lastNameText by rememberSaveable { mutableStateOf("") }
     val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
-            .padding(20.dp),
+            .padding(20.dp)
+            .statusBarsPadding()
+            .navigationBarsPadding()
+            .imePadding(),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Column {
@@ -60,7 +71,18 @@ fun SignInUI(
                 onValueChange = { value ->
                     firstNameText = value
                     signInViewModel.validateFirstName(firstNameText)
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    autoCorrect = true,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(onNext = {
+                    focusManager.moveFocus(FocusDirection.Down)
                 })
+            )
 
             Spacer(modifier = Modifier.height(15.dp))
 
@@ -78,17 +100,41 @@ fun SignInUI(
                 onValueChange = { value ->
                     lastNameText = value
                     signInViewModel.validateLastName(lastNameText)
-                })
+                },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    capitalization = KeyboardCapitalization.Sentences,
+                    autoCorrect = true,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = {
+                    focusManager.clearFocus()
+                    signInViewModel.continueFromSignUp(firstNameText, lastNameText, navHostController)
+                }),
+            )
         }
         LargeMementoButton(
-            onClick = { signInViewModel.saveSignInState(firstNameText, lastNameText)
-                      navHostController.popBackStack()
-                      navHostController.navigate(Screen.HomeScreen.route)},
-            modifier = Modifier.fillMaxWidth().height(60.dp)
+            onClick = {
+                signInViewModel.continueFromSignUp(firstNameText, lastNameText, navHostController)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
         ) {
             Text(text = "Continue", style = MaterialTheme.typography.bodyLarge)
         }
     }
+}
+
+private fun SignInViewModel.continueFromSignUp(
+    firstNameText: String,
+    lastNameText: String,
+    navHostController: NavHostController
+) {
+    this.saveSignInState(firstNameText, lastNameText)
+    navHostController.popBackStack()
+    navHostController.navigate(Screen.HomeScreen.route)
 }
 
 @ExperimentalMaterial3Api

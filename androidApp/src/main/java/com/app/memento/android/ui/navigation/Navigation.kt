@@ -2,6 +2,7 @@ package com.app.memento.android.ui.navigation
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +11,7 @@ import com.app.memento.android.ui.onboarding.OnBoardingUI
 import com.app.memento.android.ui.onboarding.SignInUI
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalComposeUiApi
 @ExperimentalMaterial3Api
 @ExperimentalPagerApi
 @Composable
