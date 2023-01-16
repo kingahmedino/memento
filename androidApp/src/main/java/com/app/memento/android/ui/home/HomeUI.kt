@@ -159,7 +159,8 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                         key = { reminder -> "triggered_${reminder.id!!}" }) { reminder ->
                         ReminderItem(
                             reminder = reminder,
-                            onClick = {})
+                            onClick = {}
+                        )
                     }
 
                     item { Spacer(modifier = Modifier.height(20.dp)) }
@@ -182,9 +183,9 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                         key = { reminder -> "notYetTriggered_${reminder.id!!}" }
                     ) { reminder ->
                         ReminderItem(
-                            modifier = Modifier.fillMaxSize(),
                             reminder = reminder,
-                            onClick = {})
+                            onClick = {}
+                        )
                     }
                 }
             }
