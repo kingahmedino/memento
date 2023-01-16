@@ -11,5 +11,6 @@ data class Reminder(
     val longitude: Double,
     val colorHex: Long,
     val created: LocalDateTime,
-    val triggered: Boolean
+    val triggered: Boolean,
+    val pinned: Boolean
 )

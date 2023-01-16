@@ -16,7 +16,8 @@ class ReminderDAOImpl(db: MementoDb): ReminderDAO {
             longitude = reminder.longitude,
             colorHex = reminder.colorHex,
             created = DateTimeUtil.toEpochMillis(reminder.created),
-            triggered = reminder.triggered
+            triggered = reminder.triggered,
+            pinned = reminder.pinned
         )
     }
 

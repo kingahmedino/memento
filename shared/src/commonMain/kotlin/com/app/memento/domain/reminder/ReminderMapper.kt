@@ -15,5 +15,6 @@ fun ReminderEntity.toReminder(): Reminder = Reminder(
     colorHex = colorHex,
     created = Instant.fromEpochMilliseconds(created)
         .toLocalDateTime(TimeZone.currentSystemDefault()),
-    triggered = triggered
+    triggered = triggered,
+    pinned = pinned
 )

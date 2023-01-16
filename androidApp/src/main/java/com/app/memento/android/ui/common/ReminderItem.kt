@@ -120,12 +120,23 @@ fun ReminderItem(
                         text = reminder.title,
                         style = MaterialTheme.typography.bodyLarge.copy(color = Color.Black)
                     )
-                    if (reminder.triggered)
-                        Icon(
-                            painter = painterResource(id = R.drawable.tick_icon),
-                            tint = MaterialTheme.colorScheme.primary,
-                            contentDescription = "Check mark for triggered reminder"
-                        )
+                    Row {
+                        if (reminder.triggered)
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                painter = painterResource(id = R.drawable.tick_icon),
+                                tint = MaterialTheme.colorScheme.primary,
+                                contentDescription = "Check mark for triggered reminder"
+                            )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        if (reminder.pinned)
+                            Icon(
+                                modifier = Modifier.size(18.dp),
+                                painter = painterResource(id = R.drawable.pin_icon),
+                                tint = MaterialTheme.colorScheme.primary,
+                                contentDescription = "Pin icon"
+                            )
+                    }
                 }
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
@@ -173,6 +184,7 @@ fun ReminderItemPreview() {
         longitude = 4.54343,
         colorHex = 0xFFFFFBE5,
         created = DateTimeUtil.now(),
-        triggered = false
+        triggered = true,
+        pinned = true
     ), onClick = {})
 }
