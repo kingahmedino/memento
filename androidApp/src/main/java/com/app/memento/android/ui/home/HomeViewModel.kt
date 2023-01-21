@@ -17,9 +17,11 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val dataStoreUtils: DataStoreUtils, private val reminderDAO: ReminderDAO): ViewModel() {
     private val _triggeredReminders = MutableStateFlow(listOf<Reminder>())
     val triggeredReminders: StateFlow<List<Reminder>> get() = _triggeredReminders
+    private val nonUITriggeredReminders = mutableListOf<Reminder>()
 
     private val _notYetTriggeredReminders = MutableStateFlow(listOf<Reminder>())
     val notYetTriggeredReminders: StateFlow<List<Reminder>> get() = _notYetTriggeredReminders
+    private val nonUINonTriggeredReminders = mutableListOf<Reminder>()
 
     var firstName = mutableStateOf("")
         private set
@@ -42,6 +44,7 @@ class HomeViewModel @Inject constructor(private val dataStoreUtils: DataStoreUti
     private fun getTriggeredReminders() {
         viewModelScope.launch {
             val reminders = reminderDAO.getAllTriggeredReminders()
+            nonUITriggeredReminders.addAll(reminders)
             _triggeredReminders.emit(reminders)
         }
     }
@@ -49,6 +52,7 @@ class HomeViewModel @Inject constructor(private val dataStoreUtils: DataStoreUti
     private fun getNotYetTriggeredReminders() {
         viewModelScope.launch {
             val reminders = reminderDAO.getAllNonTriggeredReminders()
+            nonUINonTriggeredReminders.addAll(reminders)
             _notYetTriggeredReminders.emit(reminders)
         }
     }
@@ -63,5 +67,16 @@ class HomeViewModel @Inject constructor(private val dataStoreUtils: DataStoreUti
             reminderDAO.deleteReminder(reminder.id!!)
             getReminders()
         }
+    }
+
+    fun searchReminder(query: String) = viewModelScope.launch {
+        val triggeredReminderResult = nonUITriggeredReminders.filter {
+            it.title.contains(query) || it.description.contains(query) || it.location.contains(query)
+        }
+        val nonTriggeredReminderResult = nonUINonTriggeredReminders.filter {
+            it.title.contains(query) || it.description.contains(query) || it.location.contains(query)
+        }
+        _triggeredReminders.emit(triggeredReminderResult)
+        _notYetTriggeredReminders.emit(nonTriggeredReminderResult)
     }
 }

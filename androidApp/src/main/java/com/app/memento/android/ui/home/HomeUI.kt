@@ -42,6 +42,8 @@ import com.app.memento.android.utils.getActivity
 @ExperimentalMaterial3Api
 @Composable
 fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = hiltViewModel()) {
+    val triggeredReminders = homeViewModel.triggeredReminders.collectAsState()
+    val nonTriggeredReminders = homeViewModel.notYetTriggeredReminders.collectAsState()
     val activity = LocalContext.current.getActivity()
     DisposableEffect(key1 = true) {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
@@ -104,7 +106,8 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                     ),
                     keyboardActions = KeyboardActions(
                         onSearch = {
-                            focusManager.clearFocus() //search for the reminder
+                            focusManager.clearFocus()
+                            homeViewModel.searchReminder(searchText)
                         }),
                     leadingIcon = {
                         Icon(
@@ -115,6 +118,7 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                     },
                     onValueChange = { value ->
                         searchText = value
+                        homeViewModel.searchReminder(searchText)
                     },
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = MaterialTheme.colorScheme.outline.copy(
@@ -132,7 +136,7 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                 contentPadding = PaddingValues(20.dp)
             ) {
 
-                if (homeViewModel.triggeredReminders.value.isEmpty() && homeViewModel.notYetTriggeredReminders.value.isEmpty()) {
+                if (triggeredReminders.value.isEmpty() && nonTriggeredReminders.value.isEmpty()) {
                     item {
                         EmptyReminderUI(
                             modifier = Modifier
@@ -142,7 +146,7 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                     }
                 }
 
-                if (homeViewModel.triggeredReminders.value.isNotEmpty()) {
+                if (triggeredReminders.value.isNotEmpty()) {
                     stickyHeader {
                         Text(
                             text = "Triggered Reminders⚡️",
@@ -155,7 +159,7 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                     }
 
                     items(
-                        homeViewModel.triggeredReminders.value,
+                        triggeredReminders.value,
                         key = { reminder -> "triggered_${reminder.id!!}" }) { reminder ->
                         ReminderItem(
                             reminder = reminder,
@@ -166,7 +170,7 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                     item { Spacer(modifier = Modifier.height(20.dp)) }
                 }
 
-                if (homeViewModel.notYetTriggeredReminders.value.isNotEmpty()) {
+                if (nonTriggeredReminders.value.isNotEmpty()) {
                     stickyHeader {
                         Text(
                             text = "Not yet Triggered😬️",
@@ -179,7 +183,7 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                     }
 
                     items(
-                        homeViewModel.notYetTriggeredReminders.value,
+                        nonTriggeredReminders.value,
                         key = { reminder -> "notYetTriggered_${reminder.id!!}" }
                     ) { reminder ->
                         ReminderItem(
