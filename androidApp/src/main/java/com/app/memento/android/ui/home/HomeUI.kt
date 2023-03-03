@@ -85,7 +85,6 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                     )
                 }
 
-
                 TextField(
                     modifier = Modifier
                         .padding(horizontal = 20.dp)
@@ -158,12 +157,27 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                         )
                     }
 
+                    //pinned reminders
                     items(
-                        triggeredReminders.value,
+                        triggeredReminders.value.filter { it.pinned },
                         key = { reminder -> "triggered_${reminder.id!!}" }) { reminder ->
                         ReminderItem(
                             reminder = reminder,
-                            onClick = {}
+                            onClick = {},
+                            onDelete = { homeViewModel.deleteReminder(it) },
+                            onPin = { homeViewModel.pinOrUnpinReminder(it) }
+                        )
+                    }
+
+                    //unpinned reminders
+                    items(
+                        triggeredReminders.value.filter { !it.pinned },
+                        key = { reminder -> "triggered_${reminder.id!!}" }) { reminder ->
+                        ReminderItem(
+                            reminder = reminder,
+                            onClick = {},
+                            onDelete = { homeViewModel.deleteReminder(it) },
+                            onPin = { homeViewModel.pinOrUnpinReminder(it) }
                         )
                     }
 
@@ -182,13 +196,29 @@ fun HomeUI(navHostController: NavHostController, homeViewModel: HomeViewModel = 
                         )
                     }
 
+                    //pinned items
                     items(
-                        nonTriggeredReminders.value,
+                        nonTriggeredReminders.value.filter { it.pinned },
                         key = { reminder -> "notYetTriggered_${reminder.id!!}" }
                     ) { reminder ->
                         ReminderItem(
                             reminder = reminder,
-                            onClick = {}
+                            onClick = {},
+                            onDelete = { homeViewModel.deleteReminder(it) },
+                            onPin = { homeViewModel.pinOrUnpinReminder(it) }
+                        )
+                    }
+
+                    //unpinned items
+                    items(
+                        nonTriggeredReminders.value.filter { !it.pinned },
+                        key = { reminder -> "notYetTriggered_${reminder.id!!}" }
+                    ) { reminder ->
+                        ReminderItem(
+                            reminder = reminder,
+                            onClick = {},
+                            onDelete = { homeViewModel.deleteReminder(it) },
+                            onPin = { homeViewModel.pinOrUnpinReminder(it) }
                         )
                     }
                 }

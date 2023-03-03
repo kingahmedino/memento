@@ -32,7 +32,9 @@ import kotlin.math.roundToInt
 fun ReminderItem(
     modifier: Modifier = Modifier,
     reminder: Reminder,
-    onClick: (Reminder) -> Unit
+    onClick: (Reminder) -> Unit,
+    onDelete: (Reminder) -> Unit,
+    onPin: (Reminder) -> Unit
 ) {
     val boxColor = remember { mutableStateOf(Color.Transparent) }
     val leftColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
@@ -59,7 +61,10 @@ fun ReminderItem(
         IconButton(
             modifier = Modifier
                 .align(Alignment.CenterStart),
-            onClick = {}) {
+            onClick = {
+                expandedState.value = ExpandState.COLLAPSED
+                onPin(reminder)
+            }) {
             Icon(
                 tint = MaterialTheme.colorScheme.primary,
                 painter = painterResource(id = R.drawable.pin_icon),
@@ -70,7 +75,10 @@ fun ReminderItem(
         IconButton(
             modifier = Modifier
                 .align(Alignment.CenterEnd),
-            onClick = {}) {
+            onClick = {
+                expandedState.value = ExpandState.COLLAPSED
+                onDelete(reminder)
+            }) {
             Icon(
                 tint = MaterialTheme.colorScheme.error,
                 painter = painterResource(id = R.drawable.trash_icon),
@@ -186,5 +194,5 @@ fun ReminderItemPreview() {
         created = DateTimeUtil.now(),
         triggered = true,
         pinned = true
-    ), onClick = {})
+    ), onClick = {}, {}, {})
 }
