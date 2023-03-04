@@ -7,7 +7,8 @@ CREATE TABLE reminderEntity(
     longitude REAL NOT NULL,
     colorHex INTEGER NOT NULL,
     created INTEGER NOT NULL,
-    triggered INTEGER AS Boolean NOT NULL DEFAULT 0
+    triggered INTEGER AS Boolean NOT NULL DEFAULT 0,
+    pinned INTEGER AS Boolean NOT NULL DEFAULT 0
 );
 
 getAllReminders:
@@ -31,8 +32,18 @@ WHERE id = ?;
 
 insertReminder:
 INSERT OR REPLACE
-INTO reminderEntity
-VALUES ?;
+INTO reminderEntity(
+         id,
+         title,
+         description,
+         location,
+         latitude,
+         longitude,
+         colorHex,
+         created,
+         triggered,
+         pinned
+     ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteReminder:
 DELETE FROM reminderEntity
